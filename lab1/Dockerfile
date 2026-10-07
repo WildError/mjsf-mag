@@ -1,0 +1,18 @@
+# Стадія збірки застосунку
+FROM node:22-alpine AS build-stage
+WORKDIR /app
+
+# Встановлення залежностей
+COPY package*.json ./
+RUN npm ci
+
+# Копіювання коду та збірка
+COPY . .
+RUN npm run build
+
+# Віддача готових файлів через Nginx
+FROM nginx:1.27-alpine AS production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

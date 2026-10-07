@@ -1,0 +1,7 @@
+services:
+  vue-app:
+    image: lab1-vue-app
+    build: .
+    ports:
+      - "8080:80"
+    container_name: vue-lab-1-instance
